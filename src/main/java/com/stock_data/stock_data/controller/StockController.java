@@ -19,4 +19,14 @@ public class StockController {
         return ResponseEntity.ok(service.getStock(symbol));
     }
 
+
+    @GetMapping("/{symbol}/recommend")
+    public ResponseEntity<?> getRecommend(@PathVariable("symbol") String symbol) {
+        return ResponseEntity.ok(service.getRecommend(symbol));
+    }
+
+    @GetMapping("/recommend")
+    public ResponseEntity<?> getAllRecommend() {
+        return ResponseEntity.ok(service.getAllRecommend());
+    }
 }
