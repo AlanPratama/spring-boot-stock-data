@@ -4,9 +4,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.stock_data.stock_data.entity.Stock;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
-
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ResultDTO {
     @JsonProperty("date")
     private Date date;

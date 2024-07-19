@@ -2,17 +2,17 @@ package com.stock_data.stock_data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "stocks")
+@Builder
 public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,5 @@ public class Stock {
     private String symbol;
 
     @OneToMany(mappedBy = "stock")
-    @JsonIgnore
     private List<Result> results;
 }
