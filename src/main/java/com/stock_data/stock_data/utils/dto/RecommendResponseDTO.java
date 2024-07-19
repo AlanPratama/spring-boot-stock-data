@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -15,8 +16,16 @@ public class RecommendResponseDTO {
     private String symbol;
 
     @JsonProperty("Date")
-    private Date date;
+    private LocalDate date;
 
     @JsonProperty("Action")
     private String action; // Buy / Sell
+    // Rata rata > nilai kemarin == BUY
+    // Rata rata < nilai kemarin == SELL
+
+    @JsonProperty("MA")
+    private Double MA;
+
+    @JsonProperty("AdjClose")
+    private Double AdjClose;
 }
