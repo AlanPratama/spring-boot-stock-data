@@ -2,6 +2,8 @@ package com.stock_data.stock_data.service.impl;
 
 import com.stock_data.stock_data.entity.Result;
 import com.stock_data.stock_data.entity.Stock;
+import com.stock_data.stock_data.mapper.MapToResult;
+import com.stock_data.stock_data.mapper.MapToResultDTO;
 import com.stock_data.stock_data.repository.ResultRepository;
 import com.stock_data.stock_data.repository.StockRepository;
 import com.stock_data.stock_data.service.StockService;
@@ -46,22 +48,7 @@ public class StockServiceImpl implements StockService {
             List<ResultDTO> res = stockResponseDTO.getHistorical();
 
             for (var resultDTO : res) {
-                Result result = Result.builder()
-                        .date(resultDTO.getDate())
-                        .high(resultDTO.getHigh())
-                        .low(resultDTO.getLow())
-                        .close(resultDTO.getClose())
-                        .adjClose(resultDTO.getAdjClose())
-                        .changeOvertime(resultDTO.getChangeOvertime())
-                        .stock(stock)
-                        .open(resultDTO.getOpen())
-                        .volume(resultDTO.getVolume())
-                        .unadjustedVolume(resultDTO.getUnadjustedVolume())
-                        .change(resultDTO.getChange())
-                        .changePercent(resultDTO.getChangePercent())
-                        .vwap(resultDTO.getVwap())
-                        .label(resultDTO.getLabel())
-                        .build();
+                Result result = MapToResult.convertToResult(resultDTO, stock);
 
                 resultRepository.save(result);
             }
@@ -70,21 +57,7 @@ public class StockServiceImpl implements StockService {
             Stock stock = stockRepository.findBySymbol(symbol).orElseThrow(() -> new NotFoundException("Stock Not Found!"));
 
             List<ResultDTO> resultDTOList = stock.getResults().stream()
-                    .map(r -> ResultDTO.builder()
-                            .date(r.getDate())
-                            .open(r.getOpen())
-                            .high(r.getHigh())
-                            .low(r.getLow())
-                            .close(r.getClose())
-                            .adjClose(r.getAdjClose())
-                            .volume(r.getVolume())
-                            .unadjustedVolume(r.getUnadjustedVolume())
-                            .change(r.getChange())
-                            .changePercent(r.getChangePercent())
-                            .vwap(r.getVwap())
-                            .label(r.getLabel())
-                            .changeOvertime(r.getChangeOvertime())
-                            .build()).collect(Collectors.toList());
+                    .map(MapToResultDTO::convertToResultDTO).collect(Collectors.toList());
 
             StockResponseDTO stockResponseDTO = new StockResponseDTO();
             stockResponseDTO.setSymbol(stock.getSymbol());
@@ -93,4 +66,6 @@ public class StockServiceImpl implements StockService {
             return stockResponseDTO;
         }
     }
+
+
 }
