@@ -95,7 +95,7 @@ public class StockServiceImpl implements StockService {
                     .MA(Mean)
                     .AdjClose(restDTOList.get(9).getAdjClose())
                     .build();
-        } else if(Mean==restDTOList.get(9).getAdjClose()){
+        } else if(Mean.equals(restDTOList.get(9).getAdjClose())){
             return RecommendResponseDTO.builder()
                     .symbol(symbol)
                     .date(LocalDate.now())
@@ -117,10 +117,10 @@ public class StockServiceImpl implements StockService {
     @Override
     public List<RecommendResponseDTO> getAllRecommend() {
         List<Stock> stocks = stockRepository.findAll();
-        List<RecommendResponseDTO> listOfRecomend = new ArrayList<>(stocks.size()) ;
+        List<RecommendResponseDTO> listOfRecommend = new ArrayList<>(stocks.size()) ;
         for (var stock : stocks){
-            listOfRecomend.add(getRecommend(stock.getSymbol()));;
+            listOfRecommend.add(getRecommend(stock.getSymbol()));;
         }
-        return listOfRecomend;
+        return listOfRecommend;
     }
 }
