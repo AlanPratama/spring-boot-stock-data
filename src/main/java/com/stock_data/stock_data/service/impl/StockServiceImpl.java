@@ -19,6 +19,8 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -110,5 +112,15 @@ public class StockServiceImpl implements StockService {
                     .AdjClose(restDTOList.get(9).getAdjClose())
                     .build();
         }
+    }
+
+    @Override
+    public List<RecommendResponseDTO> getAllRecommend() {
+        List<Stock> stocks = stockRepository.findAll();
+        List<RecommendResponseDTO> listOfRecomend = new ArrayList<>(stocks.size()) ;
+        for (var stock : stocks){
+            listOfRecomend.add(getRecommend(stock.getSymbol()));;
+        }
+        return listOfRecomend;
     }
 }
