@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  psqlserver:
+    image: postgres:latest
+    container_name: postgres-compose
+    environment:
+      POSTGRES_DB: stock_data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - stock-data-network
+
+  stock-data:
+    container_name: stock-data-compose
+    image: axelbarlian/stock-data:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: stock-data
+      SPRING_DATASOURCE_URL: jdbc:postgresql://psqlserver:5432/stock_data
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_OPEN_IN_VIEW: "false"
+    networks:
+      - stock-data-network
+
+networks:
+  stock-data-network:
+    driver: bridge
